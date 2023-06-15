@@ -721,8 +721,8 @@ req.session.order=order
         intent: "sale",
         payer: { payment_method: "paypal" },
         redirect_urls: {
-          return_url: "http://localhost:3000/paypal-success",
-          cancel_url: "http://localhost:3000/paypal-err",
+          return_url: "http://timez.site/paypal-success",
+          cancel_url: "http://timez.site/paypal-err",
         },
         transactions: [
           {
