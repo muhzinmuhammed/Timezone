@@ -1,0 +1,57 @@
+<%- include('includes/admin_header'); -%>
+
+
+<%- include('includes/left_nav'); -%>
+    
+
+
+
+  
+
+
+<div class="conatiner">
+    <div class="row">
+        <div class="col-lg-6 mx-auto mt-4   ">
+           <h1 class="bg-primary text-white">
+            Add Coupon
+           </h1>
+
+            <form action="/add_coupon" id="form" method="post" name="basic" >
+                <div class="form-group">
+                  <label for="product_name">Coupon name</label>
+                  <input type="text" class="form-control" id="coupon_code" name="coupon_code">
+                </div>
+
+
+                <div class="form-group">
+                  <label for="product_price">Discount</label>
+                  <input type="number" class="form-control" id="discount" name="discount">
+                </div>
+                <div class="form-group">
+                  <label for="product_price">Description</label>
+                  <input type="text" class="form-control" id="description" name="description">
+                </div>
+                <div class="form-group">
+                  <label for="product_price">Expire Date</label>
+                  <input type="date" class="form-control" id="expire" name="expire">
+                </div>
+
+              
+               
+
+               
+              
+                
+                <button type="submit"  class="btn btn-primary d-grid mt-5">Submit</button>
+              </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+</body>
+</html>

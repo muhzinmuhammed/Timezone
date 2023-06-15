@@ -1,0 +1,123 @@
+<%- include('includes/header'); -%>
+
+
+<section class="breadcrumb_part">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="breadcrumb_iner">
+            <h2>Profile</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- breadcrumb part end-->
+  
+  
+  <!--================Checkout Area =================-->
+  <section class="checkout_area section_padding">
+    <div class="container">
+      <div class="billing_dails">
+      <div class="row">
+          <div class="col-lg-8">
+            <div class="order_box">
+              <div class="row">
+              <div class="col-lg-6">
+              <h5>Details</h5>
+              <hr>
+              <% if(userprofile){ %>
+              <form class="contact_form">
+                  
+                    <div class="col-md-12 mt-5 form-group">
+                     
+                      <p>Name: <%= userprofile.name %></p>
+                 
+                      
+                      <p>Phone: <%= userprofile.phone %></p>
+                      <p>Email: <%= userprofile.email %></p>
+                      <p>Gender: <%= userprofile.gender %></p>
+                     
+                     
+                      <a href="/forget-password">Change Password</p></a>
+                      
+                    </div>
+                  </form>
+                    <a href="/user_profile_update/<%= userprofile._id %>">
+                     
+                      <button class="btn btn-primary mt-2 mr-5 ml-3" type="submit">Update</button>
+                      </a>
+             
+                <% } %>
+          </div>
+          <div class="col-lg-2">
+              <div class="single_product_img">
+                <a href="/user_profile_update">
+                <%  if(userprofile.image[0]){ %>
+                  <img style="width: 300px; margin-top: 10px;"
+                    id="main_product_image"
+                    src="/<%= userprofile.image[0] %>"
+                    alt="#b"
+                    class="img-fluid"
+                  />
+                  <% } %>
+                  <% if(!userprofile.image[0]) { %>
+                   
+                        <img style="width: 300px; margin-top: 10px;"
+                    id="main_product_image"
+                    src="/assets/img/dummy-profile-pic.png"
+                    alt="#nh"
+                    class="img-fluid"
+                  />
+                     <p>Upload Image</p>
+                      <% } %>
+                    </a>
+                </div>
+          </div>
+      </div>
+            </div>
+           
+          </div>
+          <div class="col-lg-2">
+              <div class="order_box">
+                  <ul class="list list_2">
+                     <li>
+                          <a href="/order_history">
+                          <button class="btn btn-primary mt-3 btn-lg btn-block " type="submit">orders</button>
+                          </a>
+                      </li>
+                          <li>
+                          <a href="/wallet">
+                          <button class="btn btn-primary mt-3 btn-lg btn-block" type="submit">wallet</button>
+                          </a>
+                      
+                     
+                          <li>
+                          <a href="/cart">
+                              <button class="btn btn-primary mt-3 btn-lg btn-block" type="submit"> cart </button>
+                          </a>
+                      </li>
+                      
+                      
+                  </ul>
+                  
+              </div>
+              
+          </div>
+          
+      </div>
+      </div>
+    </div>
+  </section>
+  
+  
+
+
+<%- include('includes/footer'); -%>
+
+
+
+<h1> <%= userprofile.name %></h1>
+ <h1> <%= userprofile.phone %></h1>
+ <h1> <%= userprofile.email  %></h1>
+           

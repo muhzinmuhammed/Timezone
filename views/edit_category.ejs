@@ -1,0 +1,52 @@
+<%- include('includes/admin_header'); -%>
+
+
+        <!-- ============================================================== -->
+        <!-- end navbar -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <%- include('includes/left_nav'); -%>
+    
+
+
+
+  
+
+
+<div class="conatiner">
+    <div class="row">
+        <div class="col-lg-6 mx-auto mt-4   ">
+           
+
+
+<div class="conatiner">
+    <div class="row">
+        <div class="col-lg-6 mx-auto mt-4   ">
+           <h1 class="bg-primary text-white">
+            Edit Category <%= category.category_name %>
+           </h1>
+
+           
+              <form action="/update_category/<%= category._id %>" method="post"  enctype="multipart/form-data">
+                <div class="form-group">
+                  <label for="category_name">Category Name:</label>
+                  <input type="text" class="form-control" id="name" value="<%= category.category_name %>" name="category_name">
+                </div>
+               
+
+               
+                <div class="form-group mt-3">
+                  <label for="image">Photo file:</label>
+                  <input type="file" class="form-control-file" onchange="viewImage(event)" id="image" name="image">
+                  <img src="/<%= category.image %>" width="100" class="img-thumbnail mt-3"  m alt="">
+                </div>
+                
+                <button type="submit" class="btn btn-primary d-grid mt-5">Submit</button>
+              </form>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

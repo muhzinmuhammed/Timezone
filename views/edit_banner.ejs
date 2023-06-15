@@ -1,0 +1,24 @@
+<%- include('includes/admin_header'); -%>
+
+<%- include('includes/left_nav'); -%>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6 mx-auto mt-4">
+            <h1 class="bg-primary text-white">Edit Banner</h1>
+            <form action="/update_banner/<%= banner._id %>" method="post" enctype="multipart/form-data">
+                <div class="form-group mt-3">
+                    <label for="image">Photo file:</label>
+                    <input type="file" multiple class="form-control-file" name="image">
+                    <% for(var i=0; i< banner.image.length; i++) { %>
+                        <img src="/<%= banner.image[i] %>" width="100" class="img-thumbnail mt-3" alt="">
+                    <% } %>
+                </div>
+                <button type="submit" class="btn btn-primary d-grid mt-5">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

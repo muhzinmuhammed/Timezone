@@ -1,0 +1,192 @@
+<%- include('includes/admin_header'); -%>
+
+
+        <!-- ============================================================== -->
+        <!-- end navbar -->
+        <!-- ============================================================== -->
+        <div class="dashboard-main-wrapper">
+        <!-- ============================================================== -->
+        <div class="nav-left-sidebar sidebar-dark">
+            <div class="menu-list">
+                <nav class="navbar navbar-expand-lg navbar-light">
+                    
+                    <div class="collapse navbar-collapse" id="topheader">
+                        <ul class="navbar-nav flex-column">
+                           
+                          
+                            <li class="nav-item " >
+                                <a class="nav-link  text-white" id="dashboard-link" href="/admin_dashboard" aria-expanded="false" data-target="#submenu-1" aria-controls="submenu-1"><i class="fa fa-fw fa-user-circle"></i>Dashboard</a>
+                               
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="product-link" href="/product_tables">Product</a>
+
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" id="category-link" href="/category_tables">Category</a>
+
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" id="users-link" href="/users_tables">Users</a>
+                            </li>
+                            <li class="nav-item">
+                                
+<a class="nav-link active" id="order-link" href="/order">Order</a>
+                            </li>
+                            <li class="nav-item">
+                                    
+                                <a class="nav-link " id="order-link" href="/coupon">Coupon</a>
+                                </li>
+
+                            <li class="nav-item">
+                                    
+                                <a class="nav-link " id="order-link" href="/banner">Banner</a>
+                                </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="logout-link" href="/logout">Logout</a>
+                            </li>
+
+                          
+                          
+
+
+
+
+                          
+                          
+                          
+                       
+                           
+                        
+                          
+                          
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- wrapper  -->
+        <!-- ============================================================== -->
+     
+        <div class="dashboard-wrapper">
+            <div class="container-fluid  dashboard-content">
+                <!-- ============================================================== -->
+                <!-- pageheader -->
+                <!-- ============================================================== -->
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="page-header">
+                            
+                            
+                        </div>
+                    </div>
+                </div>
+                <!-- ============================================================== -->
+                <!-- end pageheader -->
+                <!-- ============================================================== -->
+              
+              
+                <div class="row">
+                    <!-- ============================================================== -->
+                    <!-- data table multiselects  -->
+                    <!-- ============================================================== -->
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="card">
+                          
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table id="example3" class="table table-striped table-bordered" style="width:100%">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">No</th>
+                                                <th scope="col">Order Id</th>
+                                                <th scope="col">Product Name</th>
+                                             
+                                                
+                                                <th scope="col">Qunatity</th> 
+                                              
+                                              
+                                             
+                                                
+                                               
+                                                <th scope="col">Price</th>
+                                                <th scope="col">Total</th>
+                                                <th scope="col">Image</th>
+                                                
+                                                <th scope="col">Address</th>
+                                                
+                                              
+                                              </tr>
+                                        </thead>
+                                        
+                                        <tbody>
+              
+                                            <% orders.items.forEach((item,index) => { %>
+                                              <tr>
+                                                <td><%= index + 1 %></td>
+                                                <td><%= orders._id %></td>
+                                                
+                                                <td><%= item.product.product_name %></td>
+                                                <td><%= item.quantity %></td>
+                                                <td><%= item.price %></td>
+                                                <td><%= item.price *item.quantity  %></td>
+                                                <td><img src="/<%= item.product.image[0] %>" style="width:100px" alt="img" /> </td>
+                                                <td>
+                                                  <%= orders.address.address1 %><br>
+                                                  <%= orders.address.address2 %><br>
+                                                  <%= orders.address.town %><br>
+                                                  <%= orders.address.phone %><br>
+                                                  <%= orders.address.postcode    %>
+                                                </td>
+                                                
+                                                
+                                               
+                                                
+                                              </tr>
+                                            <% }); %>
+                                          
+                                      </tbody>
+                                    
+                                        
+                                    </table>
+
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                 
+                   <!-- Button trigger modal -->
+
+<!-- Modal -->
+
+
+                    <!-- ============================================================== -->
+                    <!-- end data table multiselects  -->
+                    <!-- ============================================================== -->
+                </div>
+            </div>
+            <!-- ============================================================== -->
+           
+            <!-- ============================================================== -->
+            <!-- end footer -->
+            <!-- ============================================================== -->
+        </div>
+    </div>
+    
+    <script>
+        setTimeout(() => {
+            document.getElementById('msg').style.display="none"
+            
+        }, 3000);
+    </script>
+    
+    <!-- ============================================================== -->
+    <!-- end main wrapper -->
+    <!-- ============================================================== -->
+    <%- include('includes/admin_footer'); -%>

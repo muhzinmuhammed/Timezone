@@ -1,0 +1,48 @@
+<%- include('includes/admin_header'); -%>
+
+<%- include('includes/left_nav'); -%>
+    
+
+
+
+  
+
+
+<div class="conatiner">
+    <div class="row">
+        <div class="col-lg-6 mx-auto mt-4   ">
+           <h1 class="bg-primary text-white">
+            Add Brand
+           </h1>
+
+            <form action="/add_brand" method="post" id="add-form">
+
+               
+              <% if(locals.name) { %>
+                <div id="msg" class="alert alert-danger"><%-locals.name-%></div>
+       <% } %>
+                <div class="form-group">
+                  <label for="brand">Brand Name</label>
+                  <input type="text" class="form-control"  name="brand">
+                </div>
+               
+
+               
+               
+                
+                <button type="submit" class="btn btn-primary d-grid mt-5">Submit</button>
+              </form>
+        </div>
+    </div>
+</div>
+
+<script>
+  setTimeout(() => {
+
+    document.getElementById('msg').style.display='none'
+    
+  }, 3000);
+</script>
+
+</body>
+</html>

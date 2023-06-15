@@ -1,0 +1,168 @@
+<%- include('includes/admin_header'); -%>
+
+
+        <!-- ============================================================== -->
+        <!-- end navbar -->
+        <!-- ============================================================== -->
+        <div class="dashboard-main-wrapper">
+        <!-- ============================================================== -->
+        <%- include('includes/left_nav'); -%>
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- wrapper  -->
+        <!-- ============================================================== -->
+     
+        <div class="dashboard-wrapper">
+            <div class="container-fluid  dashboard-content">
+                <!-- ============================================================== -->
+                <!-- pageheader -->
+                <!-- ============================================================== -->
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="page-header">
+                            <button type="button" class="btn  text-white">
+                                <a href="/add_category">Add Category</a> </button>
+                            
+                        </div>
+                    </div>
+                </div>
+                <!-- ============================================================== -->
+                <!-- end pageheader -->
+                <!-- ============================================================== -->
+              
+              
+                <div class="row">
+                    <!-- ============================================================== -->
+                    <!-- data table multiselects  -->
+                    <!-- ============================================================== -->
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                      <form action="/category_search" method="GET">
+                        <div class="mt-1 input-group">
+                          <div class="form-outline">
+                            <input type="search" name="name" id="form1" class="form-control" />
+                           
+                          </div>
+                          <button type="submit" class="btn btn-primary">Search</button>
+                         
+                        </div>
+                    </form>
+                        <div class="card">
+                          
+                          
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table  id="tableID" class="table table-striped table-bordered" style="width:100%">
+                                        <thead>
+                                            <tr>
+                                                <th>No:</th>
+                                                <th>Category Name</th>
+                                                <th>Images</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <% if(locals.message) { %>
+                                          <div id="msg" class="alert alert-success"><%-locals.message-%></div>
+                                 <% } %>
+                                      
+                                          <tbody class="bg-light">
+                                            <% if (category && category.length > 0) { %>
+                                              <% category.forEach((category, index) => { %>
+                                                <tr class="align-middle">
+                                                  <td><%= index + 1 %></td>
+                                                 
+                                                  <td><%= category.category_name %></td>
+                                               
+                                                  <td><img src="<%= category.image %>" width="100px" class="img-thumbnail" alt=""></td>
+                                                  <td>
+                                                   
+                                                    
+                                                    <a href="/edit_category/<%= category._id %>" class="text-success">
+                                                      <i class="fas fa-edit fa-lg mx-1"></i>
+                                                    </a>
+                                          
+                                                    <a href="/delete_category/<%= category._id %>"  onclick="confirmDeleteCategory(event, '<%= category._id %>')"   class="text-danger">
+                                                      <i class="fas fa-trash fa-lg mx-1"></i>
+                                                    </a>
+
+                                                     
+                                                    
+                                                 
+                                                  </td>
+                                                </tr>
+                                              <% }) %>
+                                            <% } else { %>
+                                              <tr>
+                                                <td colspan="6">No Category found</td>
+                                              </tr>
+                                            <% } %>
+                                          </tbody>
+                                       
+                                        
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ============================================================== -->
+                    <!-- end data table multiselects  -->
+                    <!-- ============================================================== -->
+                </div>
+            </div>
+            <!-- ============================================================== -->
+           
+            <!-- ============================================================== -->
+            <!-- end footer -->
+            <!-- ============================================================== -->
+        </div>
+    </div>
+    <script>
+        setTimeout(() => {
+            document.getElementById('msg').style.display="none"
+            
+        }, 3000);
+    </script>
+    <script>
+      function confirmDeleteCategory(event, categoryId) {
+        event.preventDefault();
+        Swal.fire({
+          title: "Are you sure?",
+          text: "Do you want to delete the category?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Yes, delete it!",
+          cancelButtonText: "No, cancel",
+          reverseButtons: true,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // Make an AJAX request to delete the category
+            $.ajax({
+              url: "/delete_category/" + categoryId,
+              type: "GET", // Change the request type to GET
+              success: function (response) {
+                // Handle the success response
+                Swal.fire({
+                  title: "Deleted",
+                  text: "Category is deleted",
+                  icon: "success"
+                }).then(() => {
+                  // Reload the page or update the UI as needed
+                  window.location.reload();
+                });
+              },
+              error: function (error) {
+                // Handle the error response
+                Swal.fire({
+                  title: "Error",
+                  text: "Failed to delete the category.",
+                  icon: "error"
+                });
+              }
+            });
+          }
+        });
+      }
+      </script>
+    <!-- ============================================================== -->
+    <!-- end main wrapper -->
+    <!-- ============================================================== -->
+    <%- include('includes/admin_footer'); -%>

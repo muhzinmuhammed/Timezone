@@ -1,0 +1,90 @@
+<%- include('includes/header'); -%>
+  <main>
+      <!-- Hero Area Start-->
+      
+      <!--================Cart Area =================-->
+      <section class="cart_area section_padding">
+        <div class="container">
+          <div class="cart_inner">
+            <div class="table-responsive">
+                <table id="example3" class="table table-striped table-bordered" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th scope="col">No</th>
+                            <th scope="col">Order Id</th>
+                            <th scope="col">Product Name</th>
+                         
+                            
+                            <th scope="col">Qunatity</th> 
+                          
+                          
+                         
+                            
+                           
+                            <th scope="col">Price</th>
+                            <th scope="col">Total</th>
+                            <th scope="col">Image</th>
+                            
+                            <th scope="col">Address</th>
+                            
+                          
+                          </tr>
+                    </thead>
+                    
+                    <tbody>
+
+                        <% orders.items.forEach((item,index) => { %>
+                          <tr>
+                            <td><%= index + 1 %></td>
+                            <td><%= orders._id %></td>
+                            
+                            <td><%= item.product.product_name %></td>
+                            <td><%= item.quantity %></td>
+                            <td><%= item.price %></td>
+                            <td><%= item.price *item.quantity  %></td>
+                            <td><img src="/<%= item.product.image[0] %>" style="width:100px" alt="img" /> </td>
+                            <td>
+                              <%= orders.address.address1 %><br>
+                              <%= orders.address.address2 %><br>
+                              <%= orders.address.town %><br>
+                              <%= orders.address.phone %><br>
+                              <%= orders.address.postcode    %>
+                            </td>
+                            
+                            
+                           
+                            
+                          </tr>
+                        <% }); %>
+                      
+                  </tbody>
+                
+                    
+                </table>
+            </div>
+          </div>
+      </section>
+      <!--================End Cart Area =================-->
+  </main>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+  <%- include('includes/footer'); -%>

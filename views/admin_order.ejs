@@ -1,0 +1,191 @@
+<%- include('includes/admin_header'); -%>
+
+
+        <!-- ============================================================== -->
+        <!-- end navbar -->
+        <!-- ============================================================== -->
+        <div class="dashboard-main-wrapper">
+        <!-- ============================================================== -->
+        <%- include('includes/left_nav'); -%>
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- wrapper  -->
+        <!-- ============================================================== -->
+     
+        <div class="dashboard-wrapper">
+            <div class="container-fluid  dashboard-content">
+                <!-- ============================================================== -->
+                <!-- pageheader -->
+                <!-- ============================================================== -->
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="page-header">
+                            
+                            
+                        </div>
+                    </div>
+                </div>
+                <!-- ============================================================== -->
+                <!-- end pageheader -->
+                <!-- ============================================================== -->
+              
+              
+                <div class="row">
+                    <!-- ============================================================== -->
+                    <!-- data table multiselects  -->
+                    <!-- ============================================================== -->
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="card">
+                          
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table id="example3" class="table table-striped table-bordered" style="width:100%">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">No</th>
+                                             
+                                                <th scope="col">Order Id</th> 
+                                                <th scope="col">User Name</th> 
+                                              
+                                              
+                                             
+                                                
+                                               
+                                                <th scope="col">Email</th>
+                                                <th scope="col">Status</th>
+                                                <th scope="col">Total</th>
+                                                <th scope="col">Action</th>
+                                                <th scope="col">View Details</th>
+                                                <th scope="col">Reason For Cancellation Product</th>
+                                             
+                                                
+                                             
+                                              
+                                              </tr>
+                                        </thead>
+                                        
+                                        <tbody>
+                                            <% orders.forEach((order, index) => { %>
+                              
+                                            <tr>
+                                              <td><%= index + 1 %></td>
+                              
+                                              <td><%= order._id%></td>
+                                              <td><%= order.user.name %></td>
+                                              <td><%= order.user.email %></td>
+                                              <td><%= order.status %></td>
+                                              <td><%= order.total %></td>
+                                             
+                                            
+                                              <td>
+                                               
+                                                <% if  (order.status != 'Cancel') { %>
+
+                                               
+                                                <a href=""class="btn border-shadow update"class="btn btn-primary" data-toggle="modal" data-target="#myModal<%= index %>">
+                                                  <span  class="text-gradient"
+                                                    ><i class="fas fa-pencil-alt"></i
+                                                  ></span>
+                                                </a>
+                                                <% } %>
+                                              </td>
+                                             
+                                             
+                                              <td>
+                                                <a href="/order_details/<%= order._id %>"
+                                                  ><button class="bg-white text-primary" type="submit">Details</button></a
+                                                >
+                                              </td>
+
+                                              <td style="word-break:break-all;"><%= order.reasonForCancel  %></td>
+
+                                              <td>
+                                                <% if  (order.status === 'Return') { %>
+                                                 
+                                                  <a
+                                                  class="btn btn-primary"
+                                                  href="/order/admin_refund/<%= order._id %>"
+                                                 
+                                                      >Refund</a>
+                                                 <% } %>
+                                              </td>
+                                             
+                                            </tr>
+                                         
+                                          
+                                            <div class="modal" id="myModal<%= index %>">
+                                                <div class="modal-dialog">
+                                                  <div class="modal-content">
+                                                  
+                                                    <!-- Modal Header -->
+                                                    <div class="modal-header">
+                                                      <h4 class="modal-title">User Status </h4>
+                                                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    </div>
+                                                    
+                                                    <!-- Modal body -->
+                                                    <div class="modal-body">
+                                                        <form action="/order/update/<%= order._id %>" method="post">
+                                                            <select name="status">
+                                                                
+                                                                <option value="Pending" <% if (orders.status === 'Pending') { %>selected<% } %>>Pending</option>
+                                                                <option value="Delivered" <% if (orders.status === 'delivered') { %>selected<% } %>>Delivered</option>
+                                                                <option value="Cancel" <% if (orders.status === 'Cancel') { %>selected<% } %>>Cancel</option>
+                                                              </select>
+                                                              <button type="submit" class="btn btn-primary">Save changes</button>
+                                                        </form>
+                                                      </div>
+                                                
+                                                    
+                                                    <!-- Modal footer -->
+                                                    <div class="modal-footer">
+                                                      <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                                    </div>
+                                                    
+                                                  </div>
+                                                </div>
+                                              </div>
+
+
+                                            <% }) %>
+                                          </tbody>
+                                    
+                                        
+                                    </table>
+
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                 
+                   <!-- Button trigger modal -->
+
+<!-- Modal -->
+
+
+                    <!-- ============================================================== -->
+                    <!-- end data table multiselects  -->
+                    <!-- ============================================================== -->
+                </div>
+            </div>
+            <!-- ============================================================== -->
+           
+            <!-- ============================================================== -->
+            <!-- end footer -->
+            <!-- ============================================================== -->
+        </div>
+    </div>
+    
+    <script>
+        setTimeout(() => {
+            document.getElementById('msg').style.display="none"
+            
+        }, 3000);
+    </script>
+    
+    <!-- ============================================================== -->
+    <!-- end main wrapper -->
+    <!-- ============================================================== -->
+    <%- include('includes/admin_footer'); -%>

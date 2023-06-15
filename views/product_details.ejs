@@ -1,0 +1,203 @@
+<%- include('includes/header'); -%>
+
+
+ <!-- jquery 3.3.1  -->
+
+ <style>
+ .image-holder{
+  width: 500px;
+  position: relative;
+  cursor: pointer;
+  >img{
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+  .aa{
+    object-fit: scale-down;
+
+  }
+}
+.image-preview{
+  width: 300px;
+  height: 300px;
+  overflow: hidden;
+  position: relative;
+  >img{
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: scale(2);
+    transform-origin: left top;
+  }
+}
+
+.magnifiying-glass{
+  width: 100px;
+  height: 100px;
+  border: 1px dashed black;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: rgba(0,0,0,0.2);
+}
+figure{
+  display: inline-block;
+  vertical-align: top;
+}
+</style>
+
+    <main>
+        <!-- Hero Area Start-->
+      
+        <!-- Hero Area End-->
+        <!--================Single Product Area =================-->
+        <div class="row ml-2 ">
+          <div class="col-lg-3">
+            <figure class="image-holder">
+
+
+            <img  src="/<%= product_image.image[0] %>" id="image" width="300" height="240" alt="#" class="img-fluid aa rounded ">
+            </figure>
+            
+          </div>
+
+          <div class="col-lg-3">
+            <figure class="image-preview d-none">
+
+
+              <img  src="/<%= product_image.image[0] %>"  id="image-preview" width="300" height="240" alt="#" class="img-fluid rounded ">
+              </figure>
+          </div>
+           
+          <div class="col-lg-4 ml-4 float-right  " >
+
+            <h4 class="text-center text-danger"><%=product_image.product_name  %></h4>
+            <p style="word-break: break-all;" class="text-dark text-center mb-4 ml-4">
+             <%= product_image.product_description %>
+
+            
+              
+             
+            </p>
+            <form onsubmit="addtoCart(event, '<%= product_image._id %>')" action="/add_cart/<%= product_image._id %>" method="post">
+              <div class="product_count_area">
+                    
+                  
+    
+                <p class="text-center text-danger">
+                  <i class="fas fa-rupee-sign " &nbsp></i>&nbsp;<%= product_image.product_price %>
+                  <br>
+                  <button type="submit" class="btn btn-danger">add to cart</button>
+                
+                </p>
+              </div>   
+             
+          </form>
+          </div>
+        </div>
+     
+        <!--================End Single Product Area =================-->
+        
+        <!-- subscribe part end -->
+    </main>
+    
+    <script>
+      var holder = document.querySelector('.image-holder');
+var image = document.getElementById('image');
+var previewHolder = document.querySelector('.image-preview');
+var imagePreview = document.getElementById('image-preview');
+imagePreview.src = image.src;
+holder.addEventListener('mousemove', () => {
+    var magGlass = document.querySelector('.magnifiying-glass');
+    let left = event.clientX - holder.offsetLeft;
+    let top = event.clientY - holder.offsetTop;
+    let height = image.clientHeight;
+    let width = image.clientWidth;
+    let previewWidth = imagePreview.clientWidth;
+    let scaleValue = 2500 / previewWidth;
+    imagePreview.style.transform = 'scale(' + scaleValue + ')';
+    let magTop = top - 50;
+    let magLeft = left - 50;
+    if(magTop <= 0){
+      magTop = 0;
+    } 
+    if(magLeft <= 0){
+       magLeft = 0;
+    }
+    if(magLeft >= (width - 100)){
+      magLeft = width - 100;
+    }
+    if(magTop >= (height - 100)){
+       magTop = height - 100;
+    }
+    magGlass.style.top = magTop + 'px';
+    magGlass.style.left = magLeft + 'px';
+    let topPercentage = top / height * 100;
+    let leftPercentage = left / width * 100;
+    imagePreview.style.top = - (5 * magTop) + "px";
+    imagePreview.style.left = - (5 * magLeft) + "px";
+});
+holder.addEventListener('mouseenter', () => {
+    previewHolder.classList.remove('d-none');
+    let magGlass = document.createElement("DIV");
+    magGlass.className = 'magnifiying-glass';
+    holder.appendChild(magGlass);
+});
+holder.addEventListener('mouseleave', () => {
+    var magGlass = holder.querySelector('.magnifiying-glass');
+    previewHolder.classList.add('d-none');
+    magGlass.parentNode.removeChild(magGlass);
+    imagePreview.style.top = 0;
+    imagePreview.style.left = 0;
+});
+
+
+
+    </script>
+    <script>
+       
+function addtoCart(event, userId) {
+    console.log(userId);
+event.preventDefault();
+
+  // Make an AJAX request to update the user's status
+  $.ajax({
+    url: "/add_cart/" + userId,
+    type: "POST",
+    success: function (response) {
+      // Handle the success response
+      Swal.fire({
+        title: "Updated!",
+        text: "Add To cart is success.",
+        icon: "success"
+      }).then(() => {
+        // Reload the page or update the UI as needed
+        window.location.reload();
+      });
+    },
+    error: function (error) {
+      // Handle the error response
+      Swal.fire({
+        title: "Error",
+        text: "Failed to unblock user.",
+        icon: "error"
+      });
+    }
+  });
+}
+
+
+    </script>
+
+
+
+
+
+
+
+
+
+
+ 
+    <!-- <%- include('includes/footer'); -%> -->

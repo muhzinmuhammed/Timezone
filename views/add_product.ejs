@@ -1,0 +1,128 @@
+<%- include('includes/admin_header'); -%>
+
+
+<%- include('includes/left_nav'); -%>
+    
+
+
+
+  
+
+
+<div class="conatiner">
+    <div class="row">
+        <div class="col-lg-6 mx-auto mt-4   ">
+           <h1 class="bg-primary text-white">
+            Add Product
+           </h1>
+
+            <form action="/add_product" id="form" method="post" name="basic"   onsubmit="return validateBasic()" enctype="multipart/form-data">
+                <div class="form-group">
+                  <label>Product name</label>
+                  <input type="text" class="form-control" name="product_name">
+                  
+                </div>
+
+
+                <div class="form-group">
+                  <label >Product Price</label>
+                  <input type="number" class="form-control"  name="product_price">
+                  
+                </div>
+                <div class="form-group">
+                  <label >Product Description</label>
+                  <textarea type="text" class="form-control" name="description">
+                    </textarea>
+                </div>
+                <div class="form-group">
+                  <label >Product Stock</label>
+                  <input type="number" class="form-control"  name="stock">
+                </div>
+                
+
+                <div class="form-group  dropdown mt-4">
+                  <label for="product_category">Product Category</label>
+                  <select class=" form-control" id="category" name="category" required>
+                    <% category.forEach(function(category) { %>
+                      <option value="<%= category._id  %>"><%= category.category_name %></option>
+                    <% }); %>
+                  </select>
+
+                 
+
+                </div>
+                <div class="form-group  dropdown mt-4">
+                  <label for="product_category">Product Brand</label>
+                  <select class=" form-control" id="category" name="brand" required>
+                    <% brand.forEach(function(brand) { %>
+                      <option value="<%= brand._id  %>"><%= brand.brand %></option>
+                    <% }); %>
+                  </select>
+
+                 
+
+                </div>
+               
+
+               
+                <div class="form-group mt-3">
+                  <label for="image">Product Photo </label>
+                  <input type="file" class="form-control-file" id="image" multiple name="image">
+                </div>
+                
+                <button type="submit" onclick="showSweetAlert()" class="btn btn-primary d-grid mt-5">Submit</button>
+              </form>
+        </div>
+    </div>
+</div>
+
+
+<script>
+  function validateBasic() { 
+  
+  var name = document.basic.product_name.value;
+  var price = document.basic.product_price.value;  
+  var category = document.basic.category.value;  
+  var stock = document.basic.stock.value;  
+  var image = document.basic.image.value;  
+   
+
+  if (name === "" || price === ""  || image === ""||stock==="") {
+      alert("Please fill all fields.");
+      return false;
+  }
+
+  // Validate email
+  var priceRegex = /^(\d*([.,](?=\d{3}))?\d+)+((?!\2)[.,]\d\d)?$/;
+  if (!priceRegex.test(price)) {       
+      alert("Invalid price .");         
+      return false;    
+  }     
+
+  // Validate name
+  var nameRegex = /^[A-Za-z\s]+$/;
+  if (!nameRegex.test(name)) {
+      alert("Name should only contain letters and spaces.");
+      return false;
+  }
+
+  var stockRegex=/^(\d*([.,](?=\d{3}))?\d+)+((?!\2)[.,]\d\d)?$/
+
+  if (!stockRegex.test(stock)) {       
+      alert("Invalid stock address.");         
+      return false;    
+  } 
+
+
+
+ 
+  return true;
+}
+
+
+</script>
+
+
+
+</body>
+</html>

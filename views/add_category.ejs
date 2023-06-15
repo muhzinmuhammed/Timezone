@@ -1,0 +1,51 @@
+<%- include('includes/admin_header'); -%>
+
+<%- include('includes/left_nav'); -%>
+    
+
+
+
+  
+
+
+<div class="conatiner">
+    <div class="row">
+        <div class="col-lg-6 mx-auto mt-4   ">
+           <h1 class="bg-primary text-white">
+            Add Category
+           </h1>
+
+            <form action="/add_category" method="post" id="add-form" enctype="multipart/form-data">
+
+               
+              <% if(locals.name) { %>
+                <div id="msg" class="alert alert-danger"><%-locals.name-%></div>
+       <% } %>
+                <div class="form-group">
+                  <label for="category_name">Category Name</label>
+                  <input type="text" class="form-control" id="category_name" name="category_name">
+                </div>
+               
+
+               
+                <div class="form-group mt-3">
+                  <label for="image">Category Phto</label>
+                  <input type="file" class="form-control-file" id="image" name="image">
+                </div>
+                
+                <button onclick="" type="submit" class="btn btn-primary d-grid mt-5">Submit</button>
+              </form>
+        </div>
+    </div>
+</div>
+
+<script>
+  setTimeout(() => {
+
+    document.getElementById('msg').style.display='none'
+    
+  }, 3000);
+</script>
+
+</body>
+</html>

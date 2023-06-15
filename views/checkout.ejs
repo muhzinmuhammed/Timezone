@@ -1,0 +1,461 @@
+<%- include('includes/header') %>
+
+<!-- breadcrumb part start-->
+
+  <div class="container">
+   
+  </div>
+
+<!-- breadcrumb part end-->
+
+<!--================Checkout Area =================-->
+<section class="checkout_area section_padding">
+  <div class="container" >
+  
+    
+  
+      <div class="row  bg-danger">
+        <div class="col-lg-6">
+           <div class="order_box">
+            <h5>Address Details</h5>
+            <hr class="divider">
+          
+          
+            
+                
+                <div class="col-md-12 form-group">
+                
+                <p><%= specifiedAddress.name %></p>
+                <p class="bg-light"><%= specifiedAddress.address1 %>,<%= specifiedAddress.address2 %></p>
+                <p><%= specifiedAddress.city %></p>
+                <p><%= specifiedAddress.pin_number %></p>
+                <p><%= specifiedAddress.phone %></p>
+                <p><%= specifiedAddress.email %></p>
+                     
+              </div>
+
+              <h3>
+                coupon available
+              </h3>
+          
+              <% couponfind.forEach(function(coupon, index) { %>
+                
+             
+                    <label for="coupon<%= index+1 %>">
+                      <%= coupon %>  
+                    </label>
+                    <label>
+                      
+                    </label>
+                   
+                  
+               
+                
+              <% }); %>
+              <div class="card">
+                <div class="card-body d-flex">
+                  <form id="couponForm" action="/redeem_coupon" method="post" class="flex-grow-1">
+                    <div class="form-group d-flex">
+                       <label for="couponCode" class="mr-2">Coupon Code</label>
+                       <input type="text" class="form-control" name="coupon" id="couponCode" placeholder="Enter the coupon code">
+
+                    </div>
+                    <div id="couponMessage" style="padding-bottom: 10px; color: darkred;"></div>
+
+           
+                    <button type="button" onclick="redeem()" class="btn btn-primary ml-auto" style="margin-bottom: 30px;">Redeem</button>
+                    
+                 </form>
+
+                
+
+                </div>
+             </div>
+            
+           </div>
+        </div>
+
+        <div class="col-lg-6">
+        <form id="checkout-form" action="/add_order/<%= specifiedAddress._id %>" method="post">
+        
+          <div class="order_box">
+            <h2>Your Order</h2>
+            <ul class="list">
+              
+              <li>
+                <a style="text-decoration: none;" href="#"
+                  >Product
+                  <span>Total</span>
+                </a>
+              </li>
+              <% cart.products.forEach(function(product) { %>
+              <li>
+                <a style="text-decoration: none" href="#"
+                  ><%= product.productId.product_name %>
+                  <span class="middle">x <%= product.quantity %></span>
+                  <span class="last item-total"><%= product.productId.product_price * product.quantity %> </span>
+                </a>
+              </li>
+              <% }); %>
+              
+              
+            </ul>
+            <ul class="list list_2">
+             
+            
+              
+              <li>
+                <a style="text-decoration: none" href="#"
+                  >Discount
+              <span><%=cart.discount%></span>
+                </a>
+              </li>
+
+              <li>
+                <a style="text-decoration: none" href="#"
+                  >Shipping 
+                  <span > ₹ 50.00</span>
+                </a>
+              </li>
+              <li>
+                <a style="text-decoration: none" href="#"
+                  >Subtotal
+                  <span class="price" id="subtotal"></span>
+                </a>
+              </li>
+
+              
+       
+          <button  type="button" onclick="walletPay()" class="btn btn-primary ml-auto" style="margin-bottom: 30px;">Wallet</button>
+          <span  id="wallet" ></span> 
+          <i id="wallet_remove" onclick="deleteWallet()">
+            <span></span>
+            <span  id="coupon_amount" ></span> 
+            </i>
+              
+            </ul>
+            
+          
+              <div class="payment_item">
+                <div class="payment_item">
+                  <div class="radion_btn">
+                    <input checked="checked" type="radio" id="f-option5" name="payment_method" value="cod" />
+                    <label for="f-option5">Cash on Delivery</label>
+                    <div class="check"></div>
+                  </div>
+                  <div class="payment_item active">
+                    <input type="radio" id="f-option6" value="paypal" name="payment_method" />
+                    <label for="rzp-button1">paypal</label>
+                    <div class="check"></div>
+                  </div>
+                </div>
+                <div class="creat_account">
+                  <input type="checkbox" id="f-option4" />
+                  <label for="f-option4">I've read and accept the</label>
+                  <a href="#">terms & conditions*</a>
+                </div>
+    
+                  
+                   
+                    <div class="summary-total">
+                      <span >Total</span>
+                      <span id="totalprice" name="total"></span>
+
+                   </div>
+                 
+               
+                <button onclick="validateForm(event)" class="btn btn-danger btn-lg" type="submit">Submit</button>
+              </div>
+            </form>
+            
+            
+            
+              
+            </div>
+        </div>
+     
+    </div>
+  </div>
+</section>
+<!--================End Checkout Area =================-->
+
+
+
+
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+  
+  function validateForm(event) {
+    const cashOnDelivery = document.getElementById('f-option5');
+    const termsCheckbox = document.getElementById('f-option4');
+    const razorpay = document.getElementById("rzp-button1");
+
+    if (!cashOnDelivery.checked && !razorpay.checked) {
+      event.preventDefault(); // Prevent form submission
+      alert('Please select a payment method.'); // Show an error message or perform any necessary action
+    } else if (!termsCheckbox.checked) {
+      event.preventDefault(); // Prevent form submission
+      alert('Please accept the terms and conditions.'); // Show an error message or perform any necessary action
+    } 
+      // Handle Razorpay payment
+     
+
+    }
+  
+    
+
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+
+const setSubtotal = () => {
+            const itemTotal = document.getElementsByClassName('item-total')
+            let subtotal = 50;
+            for (let i = 0; i < itemTotal.length; i++) {
+
+               subtotal += Number(itemTotal[i].innerHTML)
+            }
+            document.getElementById('subtotal').innerHTML = subtotal;
+            document.getElementById('totalprice').innerHTML = subtotal;
+
+
+
+         }
+         setSubtotal();
+       
+  function redeem() {
+        var formData = $('#couponForm').serialize();
+  
+        $.ajax({
+           url: "/redeem_coupon",
+           type: "POST",
+           data: formData,
+           success: function(response) {
+            
+              // Handle the response here
+              
+              handleCouponResponse(response);
+           },
+           error: function(xhr, status, error) {
+              console.error('Coupon request failed. Status:', status);
+           }
+        });
+     }
+     
+     function handleCouponResponse(response) {
+  var couponMessage = document.getElementById('couponMessage');
+  var couponCodeInput = document.getElementById('couponCode');
+  var totalElement = document.getElementById('totalprice');
+
+  if (couponCodeInput.value.trim() === '') {
+    // Clear the message if the coupon code input is empty
+    couponMessage.textContent = '';
+    return;
+  }
+
+  if (response.success) {
+    document.getElementById('coupon_amount').innerHTML = ` Coupon amount - ${response.amount}`;
+    // Coupon is available, update the message and subtract the coupon value from the total
+    var couponValue = response.amount;
+    var total = parseFloat(totalElement.textContent);
+    var updatedTotal = total - couponValue;
+    totalElement.textContent = updatedTotal.toFixed(2); // Update the total with 2 decimal places
+    couponMessage1.textContent = response.message; // Display the success message from the response
+  } else {
+    // Coupon is not available or there was an error
+    couponMessage.textContent = response.message; // Display the error message from the response
+  }
+}
+  
+  </script>
+
+  <script>
+    function walletPay() {
+      
+
+        $.ajax({
+           url: "/wallet_buy",
+           type: "POST",
+          
+           success: function(data) {
+
+
+          
+            
+            if(data.success){
+           
+          
+           
+           setNewTotal(data.wallet_balance);
+
+      
+           
+           
+         }else{
+           console.log('error');
+         }
+ 
+
+              
+              
+           },
+           error: function(xhr, status, error) {
+              console.error('Coupon request failed. Status:', status);
+           }
+        });
+
+      
+    }
+    
+    const setNewTotal = (walletBalance) => {
+    const itemTotal = document.getElementsByClassName('item-total');
+    let total = 0;
+    for (let i = 0; i < itemTotal.length; i++) {
+      total += Number(itemTotal[i].innerHTML);
+    }
+    
+    let sum= (10/100)*total
+
+    if(walletBalance>sum){
+      newtotal=(total-sum) +50
+
+    
+    }else{
+     return alert('wallet Amount insufficient')
+    }
+    
+  document.getElementById('wallet').innerHTML = ` wallet amount - ${sum}`;
+  document.getElementById('wallet_remove').innerHTML = `<i class="fa fa-times"></i>`;
+  document.getElementById('wallet').style.display = 'block';
+  document.getElementById('wallet_remove').style.display = 'inline';
+    
+  
+    document.getElementById('totalprice').innerHTML = ` ${newtotal}`;
+  }
+  
+
+
+  </script>
+
+  <script>
+
+function deleteWallet() {
+      
+
+      $.ajax({
+         url: "/wallet_delete",
+         type: "POST",
+        
+         success: function(data) {
+
+
+        console.log(data,"l");
+          
+          if(data.success){
+         
+        
+         
+            setSubtotal()
+            document.getElementById('wallet').style.display = 'none';
+  document.getElementById('wallet_remove').style.display = 'none';
+    
+         
+         
+       }else{
+         console.log('error');
+       }
+
+
+            
+            
+         },
+         error: function(xhr, status, error) {
+            console.error('Coupon request failed. Status:', status);
+         }
+      });
+
+    
+  }
+
+  const setDeleteTotal = (walletBalance) => {
+    const itemTotal = document.getElementsByClassName('item-total');
+    let total = 0;
+    for (let i = 0; i < itemTotal.length; i++) {
+      total += Number(itemTotal[i].innerHTML);
+    }
+    
+    let sum= (10/100)*total
+    console.log(sum,"ku");
+    if(walletBalance>sum){
+      newtotal=(total+sum) +50
+
+    
+    }else{
+     return alert('wallet Amount insufficient')
+    }
+    
+ 
+ 
+    
+  
+    document.getElementById('totalprice').innerHTML = ` ${newtotal}`;
+  }
+  
+
+  </script>
+
+<script>
+  function deleteCoupon() {
+
+    
+        
+  
+        $.ajax({
+           url: "/delete_coupon",
+           type: "POST",
+           
+           success: function(response) {
+            
+              // Handle the response here
+              
+              handleCouponResponse(response);
+           },
+           error: function(xhr, status, error) {
+              console.error('Coupon request failed. Status:', status);
+           }
+        });
+     }
+     
+     function handleCouponResponse(response) {
+  var couponMessage = document.getElementById('couponMessage');
+  var couponCodeInput = document.getElementById('couponCode');
+  var totalElement = document.getElementById('totalprice');
+
+  if (couponCodeInput.value.trim() === '') {
+    // Clear the message if the coupon code input is empty
+    couponMessage.textContent = '';
+    return;
+  }
+
+  if (response.success) {
+    document.getElementById('coupon_amount').innerHTML = ` Coupon amount - ${response.amount}`;
+    // Coupon is available, update the message and subtract the coupon value from the total
+    var couponValue = response.amount;
+    var total = parseFloat(totalElement.textContent);
+    var updatedTotal = total - couponValue;
+    totalElement.textContent = updatedTotal.toFixed(2); // Update the total with 2 decimal places
+    couponMessage1.textContent = response.message; // Display the success message from the response
+  } else {
+    // Coupon is not available or there was an error
+    couponMessage.textContent = response.message; // Display the error message from the response
+  }
+}
+  
+  </script>
+    
+  }
+</script>
+
+
+<%- include('includes/footer') %>

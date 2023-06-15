@@ -1,0 +1,187 @@
+<%- include('includes/header'); -%>
+  <main>
+      <!-- Hero Area Start-->
+      
+      <!--================Cart Area =================-->
+      <section class="cart_area section_padding">
+        <div class="container">
+          <div class="cart_inner">
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                 
+                    <th scope="col">No</th>
+                    <th scope="col">OrderId</th>
+                  
+             
+                    
+                   
+                    <th scope="col">Total</th>
+                    <th scope="col">Payment Type</th>
+					<th scope="col">Status</th>
+					<th scope="col">View Details</th>
+
+					
+                   
+                  
+                  </tr>
+                  <tbody>
+                  
+                        <% orders.forEach((order,index) => { %>
+                          
+                              <tr>
+                              
+                               
+                                <td><%= index+1 %></td>
+                                <td><%= order._id %></td>
+                              
+                                <td><%= order.total %></td>
+                           
+                                <td><%=order.payment_method %></td>
+                                <td><%= order.status %></td>
+
+								<td>
+									<a href="/user_order_details/<%= order._id %>"
+									  ><button class="bg-white text-primary" type="submit">Details</button></a
+									>
+								  </td>
+                 
+								<td>
+                  <a href="/user_order_invoice/<%= order._id %>"
+                  ><button class="bg-white text-primary" type="submit">Invoice</button></a
+                >
+								  </td>
+                 
+
+
+								<td>
+									
+                  <% if (order.payment_method === 'paypal' && order.status === 'Pending') { %>
+                    <div class="modal fade" id="returnModal<%= order._id %>" tabindex="-1" role="dialog" aria-labelledby="returnModalLabel<%= order._id %>" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="returnModalLabel<%= order._id %>">Return Product</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <form id="returnForm<%= order._id %>" method="get" action="/order/refund/<%= order._id %>">
+                              <div class="form-group">
+                                <label for="cancelReason<%= order._id %>">Reason for Cancellation:</label>
+                                <input class="form-control" id="cancelReason<%= order._id %>" name="reason" rows="4" required />
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  
+                    <a class="btn btn-primary" href="#" data-toggle="modal" data-target="#returnModal<%= order._id %>">
+                      Cancel
+                    </a>
+                  <% } %>
+                  
+										
+										
+                
+									
+								
+									<% if  (order.status === 'Pending'&&order.payment_method !== 'paypal') { %>
+
+										<a class="btn btn-primary" href="/order/cancel/<%= order._id %>">Cancel</a>
+										<% } %>
+                    <% if (order.status === 'Delivered') {
+                      const deliveryDate = new Date(order.delivered_date);
+                      const currentDate = new Date();
+                      const threeDays = 3 * 24 * 60 * 60 * 1000; // Convert three days to milliseconds
+                    
+                      // Calculate the time difference in milliseconds
+                      const timeDifference = currentDate.getTime() - deliveryDate.getTime();
+                    
+                      // Check if more than three days have passed since delivery
+                      if (timeDifference > threeDays) { %>
+                        <button  class="btn btn-primary">No Return</button>
+                      <% } else { %>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#returnModal<%= order._id %>">Return</button>
+                      <% }
+                    } %>
+                    
+                    <div class="modal fade" id="returnModal<%= order._id %>" tabindex="-1" role="dialog" aria-labelledby="returnModalLabel<%= order._id %>" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="returnModalLabel<%= order._id %>">Return Product</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <form id="returnForm<%= order._id %>" method="get" action="/order/refund/<%= order._id %>">
+                              <div class="form-group">
+                                <label for="cancelReason<%= order._id %>">Reason for Cancellation:</label>
+                                <input class="form-control" id="cancelReason<%= order._id %>" name="reason" rows="4" required />
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    
+									<% }) %>
+								  </td>
+								 
+                          
+
+						
+                                   
+                                  
+                 
+           
+                 
+                
+                  
+               
+                  
+                
+                </tbody>
+              </table>
+            
+            </div>
+          </div>
+      </section>
+      <!--================End Cart Area =================-->
+  </main>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+  <%- include('includes/footer'); -%>

@@ -1,0 +1,236 @@
+
+
+<%- include('includes/admin_header'); -%>
+
+
+        <!-- ============================================================== -->
+        <!-- end navbar -->
+        <!-- ============================================================== -->
+        <div class="dashboard-main-wrapper">
+        <!-- ============================================================== -->
+        <%- include('includes/left_nav'); -%>
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- wrapper  -->
+        <!-- ============================================================== -->
+        <div class="dashboard-wrapper">
+            <div class="container-fluid  dashboard-content">
+                <!-- ============================================================== -->
+                <!-- pageheader -->
+                <!-- ============================================================== -->
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="page-header">
+                           
+                            
+                        </div>
+                    </div>
+                </div>
+                <!-- ============================================================== -->
+                <!-- end pageheader -->
+                <!-- ============================================================== -->
+              
+              
+                <div class="row">
+                    <!-- ============================================================== -->
+                    <!-- data table multiselects  -->
+                    <!-- ============================================================== -->
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                      <form action="/user_search" method="GET">
+                        <div class="mt-1 input-group">
+                          <div class="form-outline">
+                            <input type="search" name="name" id="form1" class="form-control" />
+                           
+                          </div>
+                          <button type="submit" class="btn btn-primary">Search</button>
+                         
+                        </div>
+                    </form>
+                        <div class="card">
+                          
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <div class="container">
+                                        <div class="row my-4">
+                                          <div class="col-lg-12">
+                                            <% if (message) { %>
+                                              <div id="msg" class="alert alert-dismissable fade show alert-<%= message.type %>" role="alert">
+                                                <strong>
+                                                  <%= message.message %>
+                                                </strong>
+                                              </div>
+                                            <% } %>
+                                      
+                                            <div class="table-responsive">
+                                              <% if (user.length > 0) { %>
+                                      
+                                                <table  id="tableID" class="table table-striped text-center">
+                                                  <thead>
+                                                    <tr>
+                                                      <th>ID</th>
+                                                    
+                                                      <th>NAME</th>
+                                                      <th>EMAIL</th>
+                                                      <th>Phone</th>
+                                                      <th>Action</th>
+                                                    
+                                                    </tr>
+                                                  </thead>
+                                                  <tbody class="bg-light">
+                                                    <% if (user && user.length > 0) { %>
+                                                      <% user.forEach((user, index) => { %>
+                                                        <tr class="align-middle">
+                                                          <td><%= index + 1 %></td>
+                                                         
+                                                          <td><%= user.name %></td>
+                                                          <td><%= user.email %></td>
+                                                          <td><%= user.phone %></td>
+                                                          <td>
+                                                            <a href="/edit_user/<%= user._id %>" class="text-success">
+                                                              <i class="fas fa-edit fa-lg mx-1"></i>
+                                                            </a>
+                                                  
+                                                            
+                                                   
+                                                          
+                                                         
+                      <% if (user.isBlocked) { %>
+                        <form onsubmit="confirmUnblockUser(event, '<%= user._id %>')" action="/users/unblock/<%= user._id %>" method="post" style="display:inline;">
+                          <button type="submit" class="btn btn-danger text-white"><i class="fa fa-lock" aria-hidden="true"></i></button>
+                        </form>
+                        
+                      <% } else { %>
+                        <form onsubmit="confirmBlockUser(event, '<%= user._id %>')" action="/users/block/<%= user._id %>" method="post" style="display:inline;">
+                          <button type="submit" class="btn btn-success text-white"><i class="fa fa-unlock" aria-hidden="true"></i></button>
+                        </form>
+                      <% } %>
+                    </td>
+                  </tr>
+                <% }) %>
+              <% } else { %>
+                <tr>
+                  <td colspan="6">No users found</td>
+                </tr>
+              <% } %>
+            </tbody>
+                                                  
+                                                  
+                                                </table>
+                                      
+                                              <% } else { %>
+                                                <h1 class="text-center text-secondary mt-5">No users in the database</h1>
+                                              <% } %>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ============================================================== -->
+                    <!-- end data table multiselects  -->
+                    <!-- ============================================================== -->
+                </div>
+            </div>
+            <!-- ============================================================== -->
+           
+            <!-- ============================================================== -->
+            <!-- end footer -->
+            <!-- ============================================================== -->
+        </div>
+    </div>
+    <script>
+        setTimeout(() => {
+            document.getElementById('msg').style.display="none"
+            
+        }, 3000);
+    </script>
+ <script>
+ function confirmBlockUser(event, userId) {
+  event.preventDefault();
+  Swal.fire({
+    title: "Are you sure?",
+    text: "You are about to unblock this user",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Yes, unblock it!",
+    cancelButtonText: "No, cancel",
+    reverseButtons: true,
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // Make an AJAX request to update the user's status
+      $.ajax({
+        url: "/users/block/" + userId,
+        type: "POST",
+        success: function (response) {
+          // Handle the success response
+          Swal.fire({
+            title: "Updated!",
+            text: "User Is Blocked.",
+            icon: "success"
+          }).then(() => {
+            // Reload the page or update the UI as needed
+            window.location.reload();
+          });
+        },
+        error: function (error) {
+          // Handle the error response
+          Swal.fire({
+            title: "Error",
+            text: "Failed to unblock user.",
+            icon: "error"
+          });
+        }
+      });
+    }
+  });
+}
+
+
+  function confirmUnblockUser(event, userId) {
+  event.preventDefault();
+  Swal.fire({
+    title: "Are you sure?",
+    text: "You are about to unblock this user",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Yes, unblock it!",
+    cancelButtonText: "No, cancel",
+    reverseButtons: true,
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // Make an AJAX request to update the user's status
+      $.ajax({
+        url: "/users/unblock/" + userId,
+        type: "POST",
+        success: function (response) {
+          // Handle the success response
+          Swal.fire({
+            title: "Updated!",
+            text: "User unblocked.",
+            icon: "success"
+          }).then(() => {
+            // Reload the page or update the UI as needed
+            window.location.reload();
+          });
+        },
+        error: function (error) {
+          // Handle the error response
+          Swal.fire({
+            title: "Error",
+            text: "Failed to unblock user.",
+            icon: "error"
+          });
+        }
+      });
+    }
+  });
+}
+
+</script>
+
+    <!-- ============================================================== -->
+    <!-- end main wrapper -->
+    <!-- ============================================================== -->
+    <%- include('includes/admin_footer'); -%>

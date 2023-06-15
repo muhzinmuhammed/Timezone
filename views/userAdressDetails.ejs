@@ -1,0 +1,135 @@
+<%- include('includes/header') %>
+
+<!-- breadcrumb part start-->
+<section class="organic-breadcrumb ">
+  <div class="container">
+    <div class="row">
+        <div class="col-md-5"></div>
+      <div class="col-lg-7 mt-5  ">
+        <div class="breadcrumb_iner">
+          <h2>Address</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- breadcrumb part end-->
+
+<!--================Checkout Area =================-->
+<section class="checkout_area section_padding">
+  <div class="container">
+    <div class="billing_details">
+      <div class="row">
+        <div class="col-lg-8">
+          <h3>Billing Details</h3>
+
+          <form
+            class="row contact_form"
+            action="/add_address"
+            method="post"
+            novalidate="novalidate"
+          >
+            <div class="col-md-12 form-group">
+              <input
+                type="text"
+                class="form-control"
+                id="first"
+                name="name"
+                placeholder="name"
+              />
+            </div>
+
+           
+            <div class="col-md-6 form-group">
+              <input
+                type="text"
+                class="form-control"
+                id="number"
+                name="phone"
+                placeholder="Phone number"
+              />
+            </div>
+            <div class="col-md-6 form-group">
+              <input
+                type="text"
+                class="form-control"
+                id="email"
+                name="email"
+                placeholder="Email Address"
+              />
+            </div>
+
+            <div class="col-md-12 form-group">
+              <input
+                type="text"
+                class="form-control"
+                id="address1"
+                name="address1"
+                placeholder="Address line 01"
+              />
+            </div>
+            <div class="col-md-12 form-group">
+              <input
+                type="text"
+                class="form-control"
+                id="address2"
+                name="address2"
+                placeholder="Address line 02"
+              />
+            </div>
+            <div class="col-md-12 form-group">
+              <input
+                type="text"
+                class="form-control"
+                id="town"
+                name="town"
+                placeholder="Town/City"
+              />
+            </div>
+
+            <div class="col-md-12 form-group">
+              <input
+                type="text"
+                class="form-control"
+                id="postcode"
+                name="postcode"
+                placeholder="Postcode/ZIP"
+              />
+            </div>
+            <div class="col-md-12 form-group">
+              <div class="checkout_btn_inner">
+                <button class="btn btn-danger">
+                  <a style="color: wheat"> Create an account?</a>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+        
+        <div class="col-lg-4">
+          <h3>Existing Address</h3>
+          <form class="contact_form">
+            <% address.address.forEach(function(address,index) { %>
+              
+              <div class="col-md-12 form-group">
+              <h5 style="text-decoration: underline;"> Address: <%= index+1 %></h5>
+              <p><%= address.name %></p>
+              <p class="bg-light"><%= address.address1 %>,<%= address.address2 %></p>
+              <p><%= address.city %></p>
+              <p><%= address.pin_number %></p>
+              <p><%= address.phone %></p>
+              <p><%= address.email %></p>
+           <button class=" btn btn-danger">  <a style="text-decoration: none;" class="text-white" href="/checkout/<%= address._id %>"  >Deliver here</a>     </button>   
+            </div>
+          </form>
+          <% }); %>
+        </div> 
+       </div>
+      </div>
+    
+    </div>
+  </div>
+</section>
+<!--================End Checkout Area =================-->
+
+<%- include('includes/footer') %>

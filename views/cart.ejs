@@ -1,0 +1,274 @@
+<%- include('includes/header'); -%>
+  <main>
+      <!-- Hero Area Start-->
+      <div style="height: 300px;" class="slider-area">
+          <div class="single-slider mb-5 slider-height2 d-flex align-items-center">
+              <div class="container">
+                  <div class="row">
+                      <div class="col-xl-12">
+                          <div class="hero-cap text-center">
+                              <h2>Cart List</h2>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <!--================Cart Area =================-->
+
+	  <% if (products) { %>
+		
+	
+      <section class="cart_area section_padding">
+        <div class="container">
+          <div class="cart_inner">
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Product</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Stock</th>
+                    <th scope="col">Total</th>
+                  </tr>
+                </thead>
+           
+                  <% products.forEach(function(product) { %>
+                 
+						<tr class="" id="remove_<%= product.productId._id %>">
+
+                      <td>
+                        <div class="media">
+                          <div class="d-flex">
+                            <img src="/<%= product.productId.image[0] %>" alt="img" />
+                          </div>
+                          <div class="media-body">
+                            <h4><%= product.productId.product_name %></h4>
+                          </div>
+                        </div>
+                      </td>
+
+                    
+                      <td>
+                        <h5><i class="fas fa-rupee-sign"></i> <%= product.productId.product_price %></h5>
+                      </td>
+                 
+                       <td>
+						
+						<button class="cart-item-count mr-4 btn btn-danger" id="decrement_<%= product.productId._id %>"
+							onclick="decrementQuantity('<%= product.productId._id %>')">-</button>
+							<% if (product.productId.stock < product.quantity) { %>
+								<h1>Out of Stock</h1>
+							<% } else { %>
+								<span id="quantity_<%= product.productId._id %>" class="mr-4 font-weight-bold" name="quantity" data-min="0" data-max="10"><%= product.quantity %></span>
+							<% } %>
+							
+							
+					  
+						
+							<button class="cart-item-count mr-4 btn btn-danger" id="increment_<%= product.productId._id %>"
+								onclick="incrementQuantity('<%= product.productId._id %>')">+</button>
+					
+
+                      </td>
+					  <td>
+		
+
+					  </td>
+                      <td class="total price">
+                        <% var total = product.quantity * product.productId.product_price; %>
+                      <h5> ₹<span id="product-total-price-<%= product.productId._id %>" class="item-total">
+                       		<%= total %></span></h5>
+                      </td>
+                      <td>
+                        <button class="btn btn-danger" onclick="confirmProductRemove(event, '<%= product.productId._id %>')" id="Remove" onclick="productRemove('<%= product.productId._id %>')"> Remove </button>
+                      </td>
+                    </tr>
+                  <% }); %>
+                  <td><h5 class="subtotal-heading">SUB TOTAL :₹</h5></td>
+                  <td>
+                    <h5> <span id="subtotal"></span></h5>
+                  </td>
+               
+                  
+                
+                </tbody>
+              </table>
+              <div class="checkout_btn_inner float-right">
+                <a class="btn_1" href="#">Continue Shopping</a>
+                <a class="btn_1 checkout_btn_1" href="/add_address">Proceed to checkout</a>
+				
+              </div>
+            </div>
+          </div>
+      </section>
+	
+      <!--================End Cart Area =================-->
+  </main>
+  <% } else { %>
+	<p class="text-danger">Cart is Empthy</p>
+	<% } %>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
+
+
+
+
+
+
+
+<script>
+	const setSubtotal=()=>{
+		const itemTotal=document.getElementsByClassName('item-total')
+		let subtotal=0;
+		console.log(itemTotal);
+		for (let i = 0; i < itemTotal.length; i++) {
+
+			subtotal+=Number(itemTotal[i].innerHTML)
+			console.log(subtotal);
+		}
+		document.getElementById('subtotal').innerHTML=subtotal;
+
+	}
+	setSubtotal();
+	
+	function incrementQuantity(cartItemId){
+	
+		$.ajax({
+			url:'/increaseQuantity',
+			method:"post",
+			data:{cartItemId:cartItemId},
+			success:function(data){
+				if(data.success){
+					
+					$(`#product-total-price-${cartItemId}`).text(data.total)
+					
+					$(`#quantity_${cartItemId}`).text(data?.quantity)
+					
+
+					
+					
+					setSubtotal();
+				}
+				else if(data.success==false){
+          
+            if (data.maxQuantity) {
+              Toastify({
+              text: "Stock Limit Exceeded",
+              className: "info",
+                  style: {
+                  background: "red",
+                  
+                },
+                
+                position: "center",
+                gravity: "center"
+                }).showToast();
+        }
+        
+            
+            setSubtotal();
+          }
+				else{
+					console.log('error');
+				}
+			},
+			error: function(jqXHR, textStatus, errorThrown){
+				console.error(errorThrown);
+			}
+		})
+	}
+
+	function decrementQuantity(cartItemId) {
+	
+	  var currentQuantity = parseInt($(`#quantity_${cartItemId}`).text());
+	  if (currentQuantity > 1) {
+		$.ajax({
+		url: "/decreaseQuantity",
+		method: "post",
+		data: { cartItemId: cartItemId },
+		success: function(data) {
+		  // Handle success response here
+		  console.log(data);
+		  $(`#product-total-price-${cartItemId}`).text(data.total);
+		  $(`#quantity_${cartItemId}`).text(data?.quantity);
+		 
+		  setSubtotal();
+		  console.log(data.stock);
+		  
+		},
+		error: function(jqXHR, textStatus, errorThrown) {
+		  // Handle error response here
+		  res.send('error')
+		}
+	  });
+	  }else{
+		$(`#quantity_${cartItemId}`).text(1);
+	  }
+	  
+	 
+	}
+
+	function productRemove(productId){
+		console.log(productId);
+		$.ajax({
+		    url:"/productRemove",
+			type:"post",
+			data:{productId:productId},
+			success:function(data){
+      console.log(data);
+				if(data.status){
+					console.log(data.message);
+					// const cartItem=document.querySelector(`tr[data-item-id="${productId}"]`)
+					const id=`remove_${productId}`
+					document.getElementById(id).remove()
+					setSubtotal();
+					if (data.length==0) {
+            window.location.href = '/cart_empty'; 
+					}
+					
+				}else{
+					console.log('error');
+				}
+
+			}	
+		})
+	}
+
+
+	function confirmProductRemove(event, productId) {
+  event.preventDefault();
+  Swal.fire({
+    title: "Are you sure?",
+    text: "You are about to remove this product",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Yes, remove it!",
+    cancelButtonText: "No, cancel",
+    reverseButtons: true,
+  }).then((result) => {
+    if (result.isConfirmed) {
+		Swal.fire({
+        title: "Deleted!",
+        text: "Product Delete From Cart",
+        icon: "success"
+      })
+      productRemove(productId);
+    }
+  });
+}
+	</script>
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+  <%- include('includes/footer'); -%>

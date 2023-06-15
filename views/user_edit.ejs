@@ -1,0 +1,88 @@
+<%- include('includes/header'); -%>
+
+
+
+<!-- breadcrumb part end-->
+
+
+<!--================Checkout Area =================-->
+<section class="checkout_area section_padding bg-light">
+  <div class="container">
+    <div class="billing_details">
+      <div class="row">
+       
+          
+        <div class="col-lg-8">
+          <form
+          action="/update_userProfile/<%= userdetails._id %>"
+          id="update_category"
+          name="basic"
+          method="post"
+          enctype="multipart/form-data"
+          
+        >
+        <div class="mb-3">
+          
+          
+             
+          <%  if(userdetails.image[0]) { %>
+            <label for="photo" class="form-group ml-5">Photo file:</label>
+              <input
+                  type="file"
+                  name="image"
+                  accept="image/*"
+                  class="form-control-file"
+              />
+              <img style="height: 100px;width: 100px;" src="/<%= userdetails.image[0] %>" alt="Dummy Profile Pic" />
+          <% } %>
+      </div>
+          <div class="mb-3">
+            <label for="category" class="form-label">Name</label>
+            <input
+              type="text"
+              class="form-control"
+             
+              name="username"
+              value="<%= userdetails.name %>"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="description" class="form-label">Phone</label>
+            <input
+              type="text"
+              class="form-control"
+             
+              name="phone"
+              value="<%= userdetails.phone %>"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="description" class="form-label">Email</label>
+            <input
+              type="text"
+              class="form-control"
+             
+              name="email"
+              value="<%= userdetails.email %>"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="description" class="form-label">Gender</label>
+            <input
+              type="text"
+              class="form-control"
+             
+              name="gender"
+              value="<%= userdetails.gender %>"
+            />
+          </div>
+      
+          <button type="submit" class="btn btn-primary">Update Profile</button>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('includes/footer'); -%>

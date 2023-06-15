@@ -1,0 +1,57 @@
+<!-- left sidebar -->
+<div class="nav-left-sidebar sidebar-dark">
+    <div class="menu-list">
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <div class="collapse navbar-collapse" id="topheader">
+                <ul class="navbar-nav app-menu flex-column">
+                    <li class="nav-item ">
+                        <a class="nav-link  text-white" id="dashboard-link" href="/admin_dashboard"><i class="fa fa-fw fa-user-circle"></i>Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="product-link" href="/product_tables">Product</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="category-link" href="/category_tables">Category</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="brand-link" href="/brand_tables">Brand</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="users-link" href="/users_tables">Users</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="order-link" href="/order">Order</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="coupon-link" href="/coupon">Coupon</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="banner-link" href="/banner">Banner</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="logout-link" href="/logout">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</div>
+<!-- end left sidebar -->
+<script>
+    $(document).ready(function () {
+    // Get the current route
+    var currentRoute = window.location.pathname;
+
+    // Loop through each navigation link
+    $('.app-menu .nav-link').each(function () {
+        // Check if the link href matches the current route
+        if ($(this).attr('href') === currentRoute) {
+            // Add the 'active' class to the link
+            $(this).addClass('active');
+        } else {
+            // Remove the 'active' class from other links
+            $(this).removeClass('active');
+        }
+     });
+    });
+</script>

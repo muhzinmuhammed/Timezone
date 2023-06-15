@@ -1,0 +1,146 @@
+<%- include('includes/header'); -%>
+
+<main>
+  <!-- Hero Area Start-->
+  <!-- Hero Area End-->
+  <!-- Latest Products Start -->
+  <section class="popular-items latest-padding">
+    <div class="container">
+      <div class="row product-btn justify-content-between mb-40">
+
+        <div class="properties__button">
+          <!--Nav Button  -->
+          <nav>                                                      
+              <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                  <a class="nav-item nav-link active" id="nav-home-tab"  href="/product_sort" role="tab" aria-controls="nav-home" aria-selected="true">Product</a>
+                  <a class="nav-item nav-link" id="nav-profile-tab"  href="/price_hightolow" role="tab" aria-controls="nav-profile" aria-selected="false"> Price high to low</a>
+                  <a class="nav-item nav-link" id="nav-contact-tab"  href="/category_sort" role="tab" aria-controls="nav-contact" aria-selected="false">Price Low to High </a>
+               
+            
+              </div>
+            
+                <div id="filteredProducts"></div>
+          </nav>
+        
+          <!--End Nav Button  -->
+      </div>
+        <!-- Grid and List view -->
+        <div class="grid-list-view"></div>
+        <!-- Select items -->
+      </div>
+
+      <div class="nav nav-tabs" id="nav-tab" role="tablist">
+        <% category.forEach(function(category) { %>
+          <a class="nav-item nav-link" href="/filter_brand/<%= category._id %>">
+            <span class="span"><%= category.category_name %></span>
+          </a>
+        <% }); %>
+      </div>
+
+      <form class="form-inline" action="/filter" method="get">
+        <div class="form-group mx-sm-3 mb-2">
+          <label for="minPrice" class="sr-only">Minimum Price</label>
+          <input type="number" name="minPrice" class="form-control" id="minPrice" placeholder="min Price">
+        </div>
+        <div class="form-group mx-sm-3 mb-2">
+          <label for="minPrice" class="sr-only">Maximum Price</label>
+          <input type="number" name="maxPrice" class="form-control" id="maxPrice" placeholder="min Price">
+        </div>
+        <button type="submit" class="btn btn-primary mb-2">Filter</button>
+      </form>
+
+      <!-- Nav Card -->
+      <div class="tab-content" id="nav-tabContent">
+        <!-- Card one -->
+        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+          <div class="row">
+            <% product.forEach((product) => { %>
+              <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
+                <div class="single-popular-items mb-50 text-center">
+                  <div class="popular-img">
+                    <a href="/product_details/<%= product._id %>">
+                      <img style="height: 400px;" src="/<%= product.image[0] %>" alt="s">
+                      <div class="img-cap">
+                        <form onsubmit="addtoCart(event, '<%= product._id %>')" action="/add_cart/<%= product._id %>" method="post">
+                          <button type="submit" class="btn btn-danger">add to cart</button>
+                        </form>
+                        <form id="addForm" action="/wishlist/<%= product._id %>" method="POST">
+                          <div class="favorit-items">
+                            <button type="submit" class="bg-danger flaticon-heart"></button>
+                          </div>
+                        </form>
+                      </div>
+                    </a>
+                  </div>
+                  <div class="popular-caption">
+                    <h3><%= product.product_name %></a></h3>
+                    <span>₹<%= product.product_price %></span>
+                  </div>
+                </div>
+              </div>
+            <% }); %>
+          </div>
+        </div>
+      </div>
+      <!-- End Nav Card -->
+
+             <!-- Pagination Controls -->
+       
+             <div class="pagination-controls float-right">
+              <% if (currentPage > 1) { %>
+                <a href="/shop?page=<%= currentPage - 1 %>" class="prev btn btn-danger"><<</a>
+              <% } %>
+            
+              <% for (let i = 1; i <= totalPages; i++) { %>
+                <% if (i == currentPage) { %>
+                  <a class="current btn btn-primary"><%= i %></a>
+                <% } else { %>
+                  <a href="/shop?page=<%= i %>" class="btn btn-danger"><%= i %></a>
+                <% } %>
+              <% } %>
+            
+              <% if (currentPage < totalPages) { %>
+                <a href="/shop?page=<%= currentPage + 1 %>" class="next btn btn-danger">>></a>
+              <% } %>
+            </div>
+            
+            <!-- End Pagination Controls -->
+    </div>
+  </section>
+  <!-- Latest Products End -->
+  <!--? Shop Method Start-->
+  <!-- Shop Method End -->
+</main>
+
+<script>
+  function addtoCart(event, userId) {
+    event.preventDefault();
+
+    // Make an AJAX request to update the user's status
+    $.ajax({
+      url: "/add_cart/" + userId,
+      type: "POST",
+      success: function (response) {
+        // Handle the success response
+        Swal.fire({
+          title: "Updated!",
+          text: "Add To cart is success.",
+          icon: "success"
+        }).then(() => {
+          // Reload the page or update the UI as needed
+          window.location.reload();
+        });
+      },
+      error: function (error) {
+        // Handle the error response
+        Swal.fire({
+          title: "Error",
+          text: "Failed to unblock user.",
+          icon: "error"
+        });
+      }
+    });
+  }
+</script>
+
+<%- include('includes/footer'); -%>
