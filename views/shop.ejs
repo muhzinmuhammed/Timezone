@@ -64,11 +64,7 @@
                         <form onsubmit="addtoCart(event, '<%= product._id %>')" action="/add_cart/<%= product._id %>" method="post">
                           <button type="submit" class="btn btn-danger">add to cart</button>
                         </form>
-                        <form id="addForm" action="/wishlist/<%= product._id %>" method="POST">
-                          <div class="favorit-items">
-                            <button type="submit" class="bg-danger flaticon-heart"></button>
-                          </div>
-                        </form>
+                       
                       </div>
                     </a>
                   </div>

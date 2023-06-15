@@ -34,7 +34,15 @@
                   class="form-control-file"
               />
               <img style="height: 100px;width: 100px;" src="/<%= userdetails.image[0] %>" alt="Dummy Profile Pic" />
-          <% } %>
+          <% } else { %>
+            <input
+                  type="file"
+                  name="image"
+                  accept="image/*"
+                  class="form-control-file"
+              />
+
+            <% } %>
       </div>
           <div class="mb-3">
             <label for="category" class="form-label">Name</label>

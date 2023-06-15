@@ -149,9 +149,13 @@ exports.user_signup = async (req, res) => {
   const phone = req.body.phone;
 
   const existingUser = await users_models.findOne({ phone: phone });
+  const existingEmail = await users_models.findOne({ email: req.body.email });
 
   if (existingUser) {
-    return res.render("user_signup", { name: "Already exists" });
+    return res.render("user_signup", { name: "Already exists phone number" });
+  }
+  if (existingEmail) {
+    return res.render("user_signup", { name: "Already exists email" });
   }
 
   const saltRounds = 10;
@@ -201,39 +205,45 @@ exports.user_signup = async (req, res) => {
 
 exports.user_login = async (req, res) => {
   const phone = req.body.phone;
-
+  console.log(phone);
   const password = req.body.password;
 
   try {
+    if (!phone) {
+     
+      return res.render("login", { message: 'Please add your phone number' });
+    }
+
+    const phoneRegex = /^[+]?[(]?[0-9]{1,4}[)]?[-\s.]?[0-9]{1,3}[-\s.]?[0-9]{1,4}[-\s.]?[0-9]{1,4}$/;
+
+    if (!phone.match(phoneRegex)) {
+      return res.render("login",{message:'Invalid phone number'});
+    }
+
     const user = await users_models.findOne({ phone: phone });
 
-   
-  
-   
-    
+    if (!user) {
+      return res.render("login", { message: 'Please correct number' });
+    }
 
     if (user.isBlocked) {
-      res.render("login",{message:'User Is Blocked'});
-      return;
+      return res.render("login", { message: 'User Is Blocked' });
     }
-    if (user) {
-      const isMatch = await bcrypt.compare(password, user.password);
 
-      if (isMatch) {
-        req.session.isAuth=true
-        req.session.username=user.name
-        req.session.user_id=user.id
-        res.redirect("/home");
-      } else {
-        res.render('login',{wrong:"Please correct your password"});
-      }
-    }else{
-      res.redirect('/login')
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (isMatch) {
+      req.session.isAuth = true;
+      req.session.username = user.name;
+      req.session.user_id = user.id;
+      return res.redirect("/home");
+    } else {
+      return res.render('login', { wrong: "Please correct your password" });
     }
   } catch (error) {
     console.error(error);
-    res.send("An error occurred while logging in.");
-  }
+    return res.send("An error occurred while logging in.");
+  }
 };
 
 exports.user_login_with_otp = (req, res) => {

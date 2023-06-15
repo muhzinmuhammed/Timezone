@@ -80,6 +80,9 @@
                         <% if(locals.blocked) { %>
                             <div id="blocked" class="alert alert-danger"><%- locals.blocked -%></div>
                    <% } %>
+                        <% if(locals.name) { %>
+                            <div id="blocked" class="alert alert-danger"><%- locals.name -%></div>
+                   <% } %>
                         <div class="login_part_text text-center">
                             <div class="login_part_text_iner">
                                 <h2>Do you have a Account</h2>
@@ -95,23 +98,34 @@
                                     Please Sign in now</h3>
                                     <form class="row contact_form" name="basic" action="/user_signup" method="post" onsubmit="return validateBasic()" enctype="multipart/form-data">
                                         <div class="col-md-12 form-group p_star">
-                                          <input type="text" class="form-control" id="name" name="name" value="" placeholder="Username">
+                                          <div class="row">
+                                            <input type="text" class="form-control col-md-12" id="name" name="name" value="" placeholder="Username">
+                                          </div>
                                         </div>
                                         <div class="col-md-12 form-group p_star">
+                                            <div class="row">
                                           <input type="email" class="form-control" id="email" name="email" value="" placeholder="Email">
                                         </div>
+                                        </div>
                                         <div class="col-md-12 form-group p_star">
+                                            <div class="row">
                                           <input type="tel" class="form-control" id="phone" name="phone" value="" placeholder="Phone">
                                         </div>
+                                     </div>
                                         <div class="col-md-12 form-group p_star">
-                                          <input type="password" class="form-control" id="password" name="password" value="" placeholder="Password">
+                                          <div class="row">
+                                            <input type="password" class="form-control col-md-11" id="password" name="password" value="" placeholder="Password" ><i class="fas fa-eye col-md-1" id="togglePassword" ></i> 
+                                          </div>
+                                         
                                         </div>
                                         <div class="col-md-12 form-group p_star">
-                                          <input type="password" class="form-control" id="confirm_password" name="confirm_password" value="" placeholder="Confirm Password">
+                                            <div class="row">
+                                          <input type="password" class="form-control col-md-11 " id="confirm_password" name="confirm_password" value="" placeholder="Confirm Password"><i class="fas fa-eye col-md-1" id="togglePasswords" ></i> 
                                         </div>
+                                     </div>
                                         <div class="col-md-12 form-group">
                                           <button type="submit" value="submit" class="btn_3">Sign in</button>
-                                          <a class="lost_pass" href="#">Forgot password?</a>
+                                        
                                         </div>
                                       </form>
                             </div>
@@ -177,5 +191,29 @@
   
    
    
+  </script>
+  <script>
+    const togglePassword = document.querySelector('#togglePassword');
+  const password = document.querySelector('#password');
+
+  togglePassword.addEventListener('click', function (e) {
+    // toggle the type attribute
+    const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+    password.setAttribute('type', type);
+    // toggle the eye slash icon
+    this.classList.toggle('fa-eye-slash');
+});
+  </script>
+  <script>
+    const togglPassword = document.querySelector('#togglePasswords');
+  const passwords = document.querySelector('#confirm_password');
+
+  togglPassword.addEventListener('click', function (e) {
+    // toggle the type attribute
+    const type = passwords.getAttribute('type') === 'password' ? 'text' : 'password';
+    passwords.setAttribute('type', type);
+    // toggle the eye slash icon
+    this.classList.toggle('fa-eye-slash');
+});
   </script>
     <%- include('includes/footer'); -%>

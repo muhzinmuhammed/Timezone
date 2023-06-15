@@ -108,18 +108,21 @@
                                     Please Sign in now</h3>
                                 <form class="row contact_form" action="/login" method="post" novalidate="novalidate">
                                     <div class="col-md-12 form-group p_star">
+                                        <div class="row">
+
+                                      
                                         <input type="text" class="form-control" id="phone" name="phone" value=""
                                             placeholder="Phone Number">
+                                        </div>
                                     </div>
                                     <div class="col-md-12 form-group p_star">
-                                        <input type="password" class="form-control" id="password" name="password" value=""
-                                            placeholder="Password">
+                                        <div class="row">
+                                        <input type="password" class="form-control col-lg-9" id="password" name="password" value=""
+                                            placeholder="Password"><i class="fas fa-eye col-md-1" id="togglePassword" ></i>
+                                        </div>
                                     </div>
                                     <div class="col-md-12 form-group">
-                                        <div class="creat_account d-flex align-items-center">
-                                            <input type="checkbox" id="f-option" name="selector">
-                                            <label for="f-option">Remember me</label>
-                                        </div>
+                                       
                                         <button type="submit" value="submit" class="btn_3">
                                             log in
                                         </button>
@@ -150,4 +153,16 @@
             
         }, 3000);
     </script>
+      <script>
+        const togglePassword = document.querySelector('#togglePassword');
+      const password = document.querySelector('#password');
+    
+      togglePassword.addEventListener('click', function (e) {
+        // toggle the type attribute
+        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+        password.setAttribute('type', type);
+        // toggle the eye slash icon
+        this.classList.toggle('fa-eye-slash');
+    });
+      </script>
     <%- include('includes/footer'); -%>
