@@ -68,7 +68,7 @@
                             </button>
                           </div>
                           <div class="modal-body">
-                            <form id="returnForm<%= order._id %>" method="get" action="/order/refund/<%= order._id %>">
+                            <form id="returnForm<%= order._id %>" method="get" action="/order/paypal_refund/<%= order._id %>">
                               <div class="form-group">
                                 <label for="cancelReason<%= order._id %>">Reason for Cancellation:</label>
                                 <input class="form-control" id="cancelReason<%= order._id %>" name="reason" rows="4" required />

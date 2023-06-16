@@ -835,6 +835,50 @@ exports.user_logout=(req,res)=>{
   res.redirect('/');
 }
 
+exports.paypal_refund=async(req,res)=>{
+ 
+    const { id } = req.params;
+  
+    try {
+      const order = await order_model
+        .findById(id)
+        .populate({ path: "items.product" });
+  
+      if (!order) {
+        return res.status(404).send({ message: "Order not found" });
+      }
+  
+      const wallet = await wallet_model.findOne({ userId: order.user });
+  
+      if (wallet) {
+        // User's wallet already exists, update the balance
+        wallet.balance += order.total;
+        wallet.transactions.push(order.payment_method);
+  
+        await wallet.save();
+      } else {
+        // User's wallet does not exist, create a new wallet
+        const newWallet = new wallet_model({
+          userId: order.user,
+          orderId: order._id,
+          balance: order.total,
+          transactions: [order.payment_method],
+        });
+  
+        await newWallet.save();
+      }
+  
+      await order_model.updateOne({ _id: id }, { $set: { status: "Refund", isWallet: 'credit' } });
+  
+  
+      res.redirect("/wallet");
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ message: "Internal server error" });
+    }
+  
+}
+
 
 exports.product_to_cart = async (req, res) => {
   try {

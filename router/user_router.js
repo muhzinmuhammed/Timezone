@@ -94,6 +94,8 @@ user_route.post('/delete_coupon',isAuth,userStatus,user_controller.deletecoupon)
 
 user_route.get("/user_signup",user_controller.getuser_signup )
 
+user_route.get('/order/paypal_refund/:id',user_controller.paypal_refund)
+
 //user sign into database
 
 user_route.post("/user_signup", upload, user_controller.user_signup);
