@@ -156,6 +156,8 @@ exports.adminDashboard = async (req, res) => {
         .populate("user");
 
         console.log(ordertable  );
+        mindate=""
+         maxdate=""
 
       res.render("admin_index", {
         totalRevenue,
@@ -165,6 +167,7 @@ exports.adminDashboard = async (req, res) => {
         data,
         monthlySales,
         monthAbbreviation,
+        mindate, maxdate
       });
     } catch (error) {
       console.error("Error:", error);
@@ -1077,7 +1080,8 @@ exports.filterDate = async (req, res) => {
       data,
       salesData: formattedSalesData,
       monthAbbreviation,
-      monthlySales
+      monthlySales,
+      mindate, maxdate
     });
   } catch (error) {
     console.error(error);

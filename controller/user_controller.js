@@ -1303,14 +1303,26 @@ exports.filterProduct = async (req, res) => {
 exports.userproduct_search = async (req, res) => {
   const user=req.session.username;
   const user_id=req.session.user_id
+  const currentPage = parseInt(req.query.page) || 1; // Get the current page number from query parameters (default: 1)
 
+    const count = await product_model.countDocuments().where({ product_status: true }); // Count the total number of products
+    const totalPages = Math.ceil(count / ITEMS_PER_PAGE);
   try {
     const query = req.query.name;
     // Get the search query from the URL query parameters
 
     const category=await category_model.find()
     const product  = await product_model.find({ product_name: { $regex: new RegExp(query, 'i') } }).populate('category')
-    res.render('shop', { product,user,user_id,category  });
+    .skip((currentPage - 1) * ITEMS_PER_PAGE) // Skip the appropriate number of products based on the current page
+    .limit(ITEMS_PER_PAGE) // Limit the number of products per page
+      .exec();
+
+if (product =="") {
+
+  console.log("hai");
+ return res.render('shop', { product,user,user_id,category,currentPage,totalPages, msg:"No products"   });
+}
+    res.render('shop', { product,user,user_id,category,currentPage,totalPages   });
   } catch (err) {
     console.error(err);
     res.status(500).send('Internal Server Error');

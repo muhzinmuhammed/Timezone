@@ -28,7 +28,9 @@
         <div class="grid-list-view"></div>
         <!-- Select items -->
       </div>
-
+      <% if(locals.msg) { %>
+        <div id="msg" class="alert alert-danger"><%- locals.msg -%></div>
+<% } %>
       <div class="nav nav-tabs" id="nav-tab" role="tablist">
         <% category.forEach(function(category) { %>
           <a class="nav-item nav-link" href="/filter_brand/<%= category._id %>">
