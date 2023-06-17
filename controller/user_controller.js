@@ -147,7 +147,8 @@ exports.userfilterBrand = async (req, res) => {
 
 exports.user_signup = async (req, res) => {
   const phone = req.body.phone;
-
+  const phoneRegex = /^[+]?[(]?[0-9]{1,4}[)]?[-\s.]?[0-9]{1,3}[-\s.]?[0-9]{1,4}[-\s.]?[0-9]{1,4}$/;
+  const regularExpression = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
   const existingUser = await users_models.findOne({ phone: phone });
   const existingEmail = await users_models.findOne({ email: req.body.email });
 
@@ -157,7 +158,12 @@ exports.user_signup = async (req, res) => {
   if (existingEmail) {
     return res.render("user_signup", { name: "Already exists email" });
   }
-
+  if (!phone.match(phoneRegex)) {
+    return res.render("user_signup",{name:'Invalid phone number'});
+  }
+  if (!req.body.email.match(regularExpression)) {
+    return res.render("user_signup",{name:'Invalid password'});
+  }
   const saltRounds = 10;
   const plainTextPassword = req.body.password;
 

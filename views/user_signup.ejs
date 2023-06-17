@@ -174,11 +174,11 @@
         alert("Please enter a valid phone number.");
         return false;
       }
-      var regularExpression = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
-      if (!regularExpression.test(password)) {
-        alert("Password should be at least 8 characters long.");
-        return false;
-      }
+      // var regularExpression = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
+      // if (!regularExpression.test(password)) {
+      //   alert("Password should be at least 8 characters long.");
+      //   return false;
+      // }
     
       if (password !== confirm_password) {
         alert("Confirm password does not match.");
