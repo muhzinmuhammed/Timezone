@@ -10,10 +10,9 @@ const paypal=require('paypal-rest-sdk')
 
 const coupon_model=require('../models/coupon_model')
 
-const pdf = require('html-pdf');
 
-const ejs = require('ejs');
-const path = require('path');
+
+
 
 const banner_model=require('../models/banner_model')
 
@@ -161,7 +160,7 @@ exports.user_signup = async (req, res) => {
   if (!phone.match(phoneRegex)) {
     return res.render("user_signup",{name:'Invalid phone number'});
   }
-  if (!req.body.email.match(regularExpression)) {
+  if (!req.body.password.match(regularExpression)) {
     return res.render("user_signup",{name:'Invalid password'});
   }
   const saltRounds = 10;
